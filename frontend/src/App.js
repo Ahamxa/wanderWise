@@ -1,9 +1,12 @@
-import HomePage from "./pages/HomePage";
+import Routerr from "./Routerr";
+import { AuthProvider } from "./context/auth";
 
 function App() {
   return (
     <div>
-      <HomePage/>
+      <AuthProvider>
+        <Routerr/>
+      </AuthProvider>
     </div>
   );
 }

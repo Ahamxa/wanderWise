@@ -5,11 +5,13 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
+import cors from "cors";
 const app=express();
 dotenv.config();
 connectDB();
 
 //middleware
+app.use(cors())
 app.use(bodyParser.json()); // Parse JSON request bodies
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev')); // Log HTTP requests
@@ -17,7 +19,7 @@ app.use('/api/v1/auth',authRoutes)
 
 app.get('/',(req,res)=>{
     res.send({
-        message: "todo app"
+        message: "WanderWise backend"
     })
 })
 
