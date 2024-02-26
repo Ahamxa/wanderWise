@@ -19,7 +19,7 @@ const Header = () => {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
             <Link to="/" className="navbar-brand">
-              🛒 WanderWise
+              WanderWise
             </Link>
                 <NavLink to="/" className="nav-link ">
                   Home
@@ -42,13 +42,13 @@ const Header = () => {
                     <NavLink>
                       {auth?.user?.name}
                     </NavLink>
-                        <NavLink to="/dashboard" className="dropdown-item">
+                        <NavLink to={`/dashboard/${auth?.user?.role === 1 ? 'admin': 'user'}` } className="nav-link">
                           Dashboard
                         </NavLink>
                         <NavLink
                           onClick={handleLogout}
                           to="/login"
-                          className="dropdown-item"
+                          className="nav-link"
                         >
                           Logout
                         </NavLink>

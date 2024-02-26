@@ -7,7 +7,9 @@ import Register from './pages/auth/Register';
 import About from './pages/About';
 import Pagenotfound from './pages/Pagenotfound';
 import ForgotPasssword from './pages/auth/ForgotPassword';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import PrivateRoute from './components/Routes/Private';
+import AdminRoute from './components/Routes/AdminRoute';
 
 export default function Routerr() {
   return (
@@ -15,7 +17,10 @@ export default function Routerr() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
-          <Route path="" element={<Dashboard />} />
+          <Route path="user" element={<Dashboard/>} />
+        </Route>
+        <Route path="/dashboard" element={<AdminRoute />}>
+          <Route path="admin" element={<AdminDashboard/>} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
