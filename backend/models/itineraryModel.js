@@ -1,27 +1,41 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
-  {
-    place: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    days: {
-      type: Number, // Corrected spelling of "Integer"
-      required: true,
-      unique: true,
-    },
-    companions: {
-      type: [String], // Array of strings for multiple choices
-      required: true,
-    },
-    interests: {
-      type: [String], // Array of strings for multiple choices and other option
-      required: true,
-    },
+const itinerarySchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
   },
-  { timestamps: true }
-);
+  location_id: {
+    type: String,
+    required: true
+  },
+  address: {
+    city: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+    address_string: {
+      type: String
+    }
+  },
+  description: {
+    type: String
+  },
+  latitude: {
+    type: Number,
+    required: true
+  },
+  longitude: {
+    type: Number,
+    required: true
+  },
+  recommended_activities: {
+    type: [String],
+  }
+});
 
-export default mongoose.model("itineraries", userSchema);
+
+export default mongoose.model('itineraryModel', itinerarySchema);
+

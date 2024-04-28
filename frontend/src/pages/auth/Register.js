@@ -13,7 +13,7 @@ const Register = () => {
   const [answer, setAnswer] = useState("");
   const navigate = useNavigate();
 
-  const baseUrl = process.env.REACT_APP_API;
+  const baseUrl = process.env.REACT_APP_BACKEND_API;
   const url = `${baseUrl}/api/v1/auth/register`;
 
   // form function
@@ -42,22 +42,24 @@ const Register = () => {
 
   return (
     <Layout title="Register - WanderWise">
-      <div className="form-container ">
-        <form onSubmit={handleSubmit}>
-          <h4 className="title">REGISTER FORM</h4>
-          <div className="mb-3">
+       <div class="container">
+      <div class="wrapper">
+        <div class="title"><span>Register Form</span></div>
+        <form form onSubmit={handleSubmit}>
+          <div class="row">
+            <i class="fas fa-user"></i>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="form-control"
               id="exampleInputEmail1"
               placeholder="Enter Your Name"
               required
               autoFocus
             />
           </div>
-          <div className="mb-3">
+          <div class="row">
+            <i class="fas fa-user"></i>
             <input
               type="email"
               value={email}
@@ -68,18 +70,8 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-3">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="Enter Your Password"
-              required
-            />
-          </div>
-          <div className="mb-3">
+          <div class="row">
+            <i class="fas fa-phone"></i>
             <input
               type="text"
               value={phone}
@@ -90,7 +82,20 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-3">
+          <div class="row">
+            <i class="fas fa-lock"></i>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="form-control"
+              id="exampleInputPassword1"
+              placeholder="Enter Your Password"
+              required
+            />
+          </div>
+          <div class="row">
+            <i class="fas fa-location-arrow"></i>
             <input
               type="text"
               value={address}
@@ -101,7 +106,8 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-3">
+          <div class="row">
+            <i class="fas fa-question"></i>
             <input
               type="text"
               value={answer}
@@ -112,11 +118,14 @@ const Register = () => {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary">
-            REGISTER
-          </button>
+          <div class="row button">
+            <input type="submit" value="Register"/>
+          </div>
+          <div class="signup-link">Already a member? <a href="/login">Signin now</a></div>
         </form>
       </div>
+    </div>
+     
     </Layout>
   );
 };

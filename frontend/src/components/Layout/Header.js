@@ -16,49 +16,60 @@ const Header = () => {
   };
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
-            <Link to="/" className="navbar-brand">
+      <div className="navbar">
+          <Link to="/" className="navbar-brand">
               WanderWise
             </Link>
-                <NavLink to="/" className="nav-link ">
-                  Home
-                </NavLink>
-                <NavLink to="/category" className="nav-link ">
-                  Category
-                </NavLink>
-              
-              {!auth?.user ? (
-                <>
-                    <NavLink to="/register" className="nav-link">
-                      Register
-                    </NavLink>
-                    <NavLink to="/login" className="nav-link">
-                      Login
-                    </NavLink>
-                </>
-              ) : (
-                <>
-                    <NavLink>
-                      {auth?.user?.name}
-                    </NavLink>
-                        <NavLink to={`/dashboard/${auth?.user?.role === 1 ? 'admin': 'user'}` } className="nav-link">
-                          Dashboard
-                        </NavLink>
-                        <NavLink
-                          onClick={handleLogout}
-                          to="/login"
-                          className="nav-link"
-                        >
-                          Logout
-                        </NavLink>
-                </>
-              )}
-                <NavLink to="/cart" className="nav-link">
-                  Cart (0)
-                </NavLink>
+        <div className="nav-item">
+           <NavLink to="/" className="nav-link ">
+              Home
+            </NavLink>
+            <NavLink to="/about-us" className="nav-link ">
+              About Us
+            </NavLink>
+            {auth?.user ?(
+            <> 
+            <NavLink to={`/dashboard/${auth?.user?.role === 1 ? 'admin': 'user'}` } className="nav-link">
+              Dashboard
+            </NavLink>
+            <NavLink to="/plan-trip/" className="nav-link ">
+              Plan Trip
+            </NavLink>
+            </>
+            ):(<></>)}
         </div>
-      </nav>
+        <div className="nav-item">
+         {!auth?.user ? 
+         (
+           <>
+              <NavLink to="/register" className="nav-link">
+                Register
+              </NavLink>
+
+              <NavLink to="/login" className="nav-link">
+                Login
+              </NavLink>
+
+            </>
+          ) : (
+            <>
+             <NavLink to="/user-profile" className="nav-link">
+                {auth?.user?.name}
+              </NavLink>
+                    
+              <NavLink
+                onClick={handleLogout}
+                to="/login"
+                className="nav-link"
+                >
+                Logout
+              </NavLink>
+            </>
+          )}
+        </div>
+            
+             
+      </div>
     </>
   );
 };

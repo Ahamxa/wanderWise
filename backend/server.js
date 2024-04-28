@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import itineraryRoutes from './routes/itineraryRoutes.js';
+import recommendationRoutes from './routes/recommendationRoutes.js';
 import cors from "cors";
 const app=express();
 dotenv.config();
@@ -18,6 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev')); // Log HTTP requests
 app.use('/api/v1/auth',authRoutes)
 app.use('/api/v1/itinerary',itineraryRoutes)
+app.use('/api/v1/recommendations',recommendationRoutes)
+
 
 app.get('/',(req,res)=>{
     res.send({

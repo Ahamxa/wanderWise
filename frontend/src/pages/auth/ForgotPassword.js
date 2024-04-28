@@ -10,7 +10,7 @@ const ForgotPasssword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [answer, setAnswer] = useState("");
 
-  const baseUrl = process.env.REACT_APP_API;
+  const baseUrl = process.env.REACT_APP_BACKEND_API;
   const url = `${baseUrl}/api/v1/auth/forgot-password`;
 
   const navigate = useNavigate();
@@ -26,7 +26,6 @@ const ForgotPasssword = () => {
       });
       if (res && res.data.success) {
         toast.success(res.data && res.data.message);
-
         navigate("/login");
       } else {
         toast.error(res.data.message);
@@ -38,11 +37,12 @@ const ForgotPasssword = () => {
   };
   return (
     <Layout title={"Forgot Password - wanderWise"}>
-      <div className="form-container ">
-        <form onSubmit={handleSubmit}>
-          <h4 className="title">RESET PASSWORD</h4>
-
-          <div className="mb-3">
+      <div class="container">
+      <div class="wrapper">
+        <div class="title"><span>Reset Passsword</span></div>
+        <form form onSubmit={handleSubmit}>
+          <div class="row">
+            <i class="fas fa-user"></i>
             <input
               type="email"
               value={email}
@@ -53,7 +53,8 @@ const ForgotPasssword = () => {
               required
             />
           </div>
-          <div className="mb-3">
+          <div class="row">
+            <i class="fa fa-question"></i>
             <input
               type="text"
               value={answer}
@@ -64,7 +65,8 @@ const ForgotPasssword = () => {
               required
             />
           </div>
-          <div className="mb-3">
+          <div class="row">
+            <i class="fa fa-lock"></i>
             <input
               type="password"
               value={newPassword}
@@ -75,12 +77,12 @@ const ForgotPasssword = () => {
               required
             />
           </div>
-
-          <button type="submit" className="btn btn-primary">
-            RESET
-          </button>
+          <div class="row button">
+            <input type="submit" value="RESET"/>
+          </div>
         </form>
       </div>
+    </div>
     </Layout>
   );
 };

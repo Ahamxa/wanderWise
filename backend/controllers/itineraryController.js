@@ -1,63 +1,124 @@
-export const itineraryController = async (req, res) => {
-    try {
-      const { place, days, companions, interests } = req.body;
-      
-      // Validations
-      if (!place || !days || !companions || !interests) {
-        return res.status(400).send({ error: "Field is missing" });
-      }
-  
-      // Sample response object
-      const sampleResponse = {
-        trip: {
-          heading: `Your trip to ${place} for ${days} days with your ${companions.join(" and ")}`
-        },
-        placesToStay: ["Place 1", "Place 2"], // Sample places to stay
-        days: [
-          {
-            dayNumber: 1,
-            description: "Day 1 description...",
-            activities: [
-              {
-                name: "Activity Name 1",
-                description: "Activity description..."
+import axios from 'axios';
+import itineraryModel from '../models/itineraryModel.js';
+
+
+  const itineraryController = {
+
+    generateItinerary: async (req, res) => {
+      try {
+        const baseUrl=process.env.ITINERARY_SERVICE_API
+        const url=`${baseUrl}/generate-itinerary`
+        //get itinerary
+        const ItineraryResponse=await axios.post(url,{
+          destination:req.body.destination,
+          num_days:req.body.num_days
+        })
+    
+        const api_key=process.env.TRIPADVISOR_API_KEY
+          // Get location ID
+          const locationIdResponse = await axios.get('https://api.content.tripadvisor.com/api/v1/location/search', {
+              params: {
+                  key: api_key,
+                  searchQuery: req.body.destination,
+                  language: 'en'
               },
-              {
-                name: "Activity Name 2",
-                description: "Activity description..."
+              headers: {
+                  accept: 'application/json'
               }
-            ]
-          },
-          {
-            dayNumber: 2,
-            description: "Day 2 description...",
-            activities: [
-              {
-                name: "Activity Name 3",
-                description: "Activity description..."
+          });
+    
+          const locationId = locationIdResponse.data.data[0].location_id;
+    
+          // Get location details
+          const locationDetailsResponse = await axios.get(`https://api.content.tripadvisor.com/api/v1/location/${locationId}/details`, {
+              params: {
+                  language: 'en',
+                  currency: 'USD',
+                  key: api_key
               },
-              {
-                name: "Activity Name 4",
-                description: "Activity description..."
+              headers: {
+                  accept: 'application/json'
               }
-            ]
+          });
+    
+          const data= {
+            name:locationIdResponse.data.data[0].name,
+            location_id:locationIdResponse.data.data[0].location_id,
+            address:locationIdResponse.data.data[0].address_obj,
+            description:locationDetailsResponse.data.description,
+            latitude:locationDetailsResponse.data.latitude,
+            longitude:locationDetailsResponse.data.longitude,
+            recommended_activities:ItineraryResponse.data.Itinerary.recommended_activities
           }
-          // Add more days as needed
-        ]
-      };
+    
+    
+          res.status(200).send({
+            success: true,
+            message: "successull",
+            data
+          });
+      } catch (error) {
+        // Handle errors
+        console.error('Error generating itinerary:', error);
+        res.status(500).json({ error: 'An error occurred while generating itinerary' });
+      }
+    },
+
+    getAllItineraries: async (req, res) => {
+      try {
+        const itineraries = await itineraryModel.find();
+        res.status(200).json({ success: true, data: itineraries });
+      } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to fetch itineraries', error: error.message });
+      }
+    },
   
-      res.status(201).send({
-        success: true,
-        message: "Itinerary generated successfully",
-        itinerary: sampleResponse
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        success: false,
-        message: "Error in itinerary generation",
-        error: error.message
-      });
-    }
+    getItineraryById: async (req, res) => {
+      try {
+        const itinerary = await itineraryModel.findById(req.params.id);
+        if (!itinerary) {
+          return res.status(404).json({ success: false, message: 'Itinerary not found' });
+        }
+        res.status(200).json({ success: true, data: itinerary });
+      } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to fetch itinerary', error: error.message });
+      }
+    },
+  
+    //create 
+    createItinerary: async (req, res) => {
+      try {
+        const itinerary = new itineraryModel(req.body);
+        await itinerary.save();
+        res.status(201).json({ success: true, message: 'Itinerary created successfully', data: itinerary });
+      } catch (error) {
+        res.status(400).json({ success: false, message: 'Failed to create itinerary', error: error.message });
+      }
+    },
+  
+    updateItinerary: async (req, res) => {
+      try {
+        const itinerary = await itineraryModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!itinerary) {
+          return res.status(404).json({ success: false, message: 'Itinerary not found' });
+        }
+        res.status(200).json({ success: true, message: 'Itinerary updated successfully', data: itinerary });
+      } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to update itinerary', error: error.message });
+      }
+    },
+  
+    deleteItinerary: async (req, res) => {
+      try {
+        const itinerary = await itineraryModel.findByIdAndDelete(req.params.id);
+        if (!itinerary) {
+          return res.status(404).json({ success: false, message: 'Itinerary not found' });
+        }
+        res.status(200).json({ success: true, message: 'Itinerary deleted successfully' });
+      } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to delete itinerary', error: error.message });
+      }
+    },
   };
   
+  export default itineraryController

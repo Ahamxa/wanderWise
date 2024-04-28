@@ -1,9 +1,16 @@
 import Layout from "../components/Layout/Layout";
+import SearchBar from "../components/SearchBar";
+import Recommendations from "../components/Recommendations";
+import "../styles/HomePageStyles.css";
+
 function HomePage() {
   return (
     <div>
         <Layout title="homepage">
-            <h1>HomePage</h1>
+          <div>
+          <SearchBar/>
+            <Recommendations/>
+          </div>
         </Layout>
     </div>
   );
