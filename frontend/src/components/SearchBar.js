@@ -67,7 +67,7 @@ const SearchBar = () => {
        <input type="text" 
        className="search_text" 
        id="search_text" 
-       placeholder="Search by Company, Keyword or the designation .."
+       placeholder="Search by destination.."
        value={locationInput}
        onChange={handleInputChange}
        />
